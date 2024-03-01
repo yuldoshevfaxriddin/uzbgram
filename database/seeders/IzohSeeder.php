@@ -15,8 +15,8 @@ class IzohSeeder extends Seeder
     {
         for ($i=0;$i<10;$i++){
             Izoh::create([
-                'retsept_id' => random_int(0,10),
-                'user_id' => random_int(0,10),
+                'retsept_id' => random_int(1,10),
+                'user_id' => random_int(1,10),
                 'description' => "Juda ajoyib",
             ]);
         }

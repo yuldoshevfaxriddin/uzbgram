@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('izohs', function (Blueprint $table) {
             $table->id();
-            $table->string('retsept_id');
-            $table->string('user_id');
+            $table->unsignedBigInteger('retsept_id');
+            $table->foreign('retsept_id')->references('id')->on('retsepts');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->text('description');
             $table->timestamps();
         });

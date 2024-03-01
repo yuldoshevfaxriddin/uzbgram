@@ -16,16 +16,12 @@
                     <h4 class="font-weight-normal text-muted mb-3">Retsept almashish tizimi</h4>
                 </div>
             </div>
-            
+
             <div class="row">
                 @foreach ($retsepts as $retsept)
                 <div class="col-lg-4 col-md-6 mb-5">
                     <div class="position-relative mb-4">
-                        <img class="img-fluid rounded w-100" src="{{$retsept->image}}" alt="">
-                        {{-- <div class="blog-date">
-                            <h4 class="font-weight-bold mb-n1">{{$retsept->id}}</h4>
-                            <small class="text-white text-uppercase">{{$retsept->name}}</small>
-                        </div> --}}
+                        <img class="img-fluid rounded w-100" src="store/{{$retsept->image}}" alt="">
                     </div>
                     <div class="d-flex mb-2">
                         <p class="text-secondary text-uppercase font-weight-medium" >{{$retsept->user_id}}</p>
@@ -33,7 +29,7 @@
                         <p class="text-secondary text-uppercase font-weight-medium" >{{$retsept->created_at}}</p>
                     </div>
                     <h5 class="font-weight-medium mb-2">{{$retsept->name}}</h5>
-                    <p class="mb-4">{{$retsept->message}}</p>
+                    <p class="mb-4">{{$retsept->short_content}}</p>
                     <a class="btn btn-sm btn-primary py-2" href="{{route('retsept-show',$retsept)}}">Read More</a>
                 </div>
                 @endforeach

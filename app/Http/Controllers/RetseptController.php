@@ -10,7 +10,6 @@ class RetseptController extends Controller
     public function index(){
         return view('retsept.index',['retsepts'=>Retsept::all()]);
     }
-
     public function show(Retsept $retsept){
         return view('retsept.single',['retsept'=>$retsept]);
     }
@@ -48,5 +47,5 @@ class RetseptController extends Controller
         $retsept->delete();
         return redirect()->route('retsept-index')->with('status',' eleted Successfully');
     }
-   
+
 }

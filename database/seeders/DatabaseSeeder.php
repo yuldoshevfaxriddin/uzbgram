@@ -25,8 +25,8 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            IzohSeeder::class,
             RetseptSeeder::class,
+            IzohSeeder::class,
         ]);
     }
 }

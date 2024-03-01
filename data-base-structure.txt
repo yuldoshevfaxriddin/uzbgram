@@ -1,0 +1,27 @@
+Table retsepts {
+  id integer
+  user_id string
+  name string
+  message string
+  image string
+  created_at timestamp
+}
+
+Table users {
+  id integer [primary key]
+  name varchar
+  mail varchar
+  password varchar
+  created_at timestamp
+}
+
+Table ihozs {
+  id integer [primary key]
+  user_id varchar
+  retsept_id text [note: 'Content of the post']
+  description varchar
+  created_at timestamp
+}
+
+Ref: retsepts.user_id < users.id
+Ref: retsepts.id < ihozs.retsept_id
