@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             RetseptSeeder::class,
-            IzohSeeder::class,
+            CommentSeeder::class,
         ]);
     }
 }

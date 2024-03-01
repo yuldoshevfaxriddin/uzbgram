@@ -4,6 +4,7 @@
     @if (session('status'))
         <h6 class="alert alert-success">{{ session('status') }}</h6>
     @endif
+    {{-- @dd($retsepts[0]->comments()->where('id', '4')) --}}
     <!-- Blog Start -->
     <div class="container-fluid py-5">
         <div class="container">
@@ -24,12 +25,12 @@
                         <img class="img-fluid rounded w-100" src="store/{{$retsept->image}}" alt="">
                     </div>
                     <div class="d-flex mb-2">
-                        <p class="text-secondary text-uppercase font-weight-medium" >{{$retsept->user_id}}</p>
+                        <p class="text-secondary text-uppercase font-weight-medium" >{{$retsept->user->name}}</p>
                         <span class="text-primary px-2">|</span>
                         <p class="text-secondary text-uppercase font-weight-medium" >{{$retsept->created_at}}</p>
                     </div>
                     <h5 class="font-weight-medium mb-2">{{$retsept->name}}</h5>
-                    <p class="mb-4">{{$retsept->short_content}}</p>
+                    <p class="mb-4">{{$retsept->message}}</p>
                     <a class="btn btn-sm btn-primary py-2" href="{{route('retsept-show',$retsept)}}">Read More</a>
                 </div>
                 @endforeach

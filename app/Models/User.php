@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Comment;
+use App\Models\Retsept;
+
 
 class User extends Authenticatable
 {
@@ -20,6 +23,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'user_bio',
+        'image',
         'email',
         'password',
     ];
@@ -46,7 +51,7 @@ class User extends Authenticatable
 
     public function comments(): HasMany
     {
-        return $this->hasMany(Izoh::class);
+        return $this->hasMany(Comment::class);
     }
     public function retsepts(): HasMany
     {

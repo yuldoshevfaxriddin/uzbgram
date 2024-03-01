@@ -8,8 +8,16 @@ use App\Models\Retsept;
 class RetseptController extends Controller
 {
     public function index(){
-        return view('retsept.index',['retsepts'=>Retsept::all()]);
+        $retsepts = Retsept::all();
+        return view('retsept.index',['retsepts'=>$retsepts]);
     }
+    
+    public function filter(Retsept $retsept){
+        dd($retsept);
+        $retsepts = Retsept::all();
+        return view('retsept.index',['retsepts'=>$retsepts]);
+    }
+
     public function show(Retsept $retsept){
         return view('retsept.single',['retsept'=>$retsept]);
     }
