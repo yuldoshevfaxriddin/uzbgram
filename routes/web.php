@@ -17,7 +17,7 @@ Route::post('/create',[RetseptController::class,'store'])->name('retsept-create'
 Route::post('/izoh',[IzohController::class,'store'])->name('izoh');
 Route::get('/retsept-delete/{retsept}',[RetseptController::class,'destroy'])->name('retsept-delete');
 Route::get('/retsept-filter/{retsept}',[RetseptController::class,'filter'])->name('retsept-filter');
-
+Route::get('/users/{user}',[RetseptController::class,'user_profil'])->name('user-profil');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

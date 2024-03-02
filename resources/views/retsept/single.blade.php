@@ -60,28 +60,13 @@
                         <form action="{{ route('izoh') }}" method="POST">
 
                             @csrf
-                            {{-- <div class="form-row">
-                                <div class="form-group col-sm-6">
-                                    <label for="name">Name *</label>
-                                    <input type="text" class="form-control" id="name">
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="email">Email *</label>
-                                    <input type="email" class="form-control" id="email">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="website">Website</label>
-                                <input type="url" class="form-control" id="website">
-                            </div> --}}
-                            <input type="hidden" name="user_id" value="3">
                             <input type="hidden" name="retsept_id" value="{{ $retsept->id }}">
                             <div class="form-group">
                                 <label for="message">Message *</label>
                                 <textarea id="message" name='message' cols="30" rows="5" class="form-control"></textarea>
                             </div>
                             <div class="form-group mb-0">
-                                <input type="submit" value="Leave Comment" class="btn btn-primary">
+                                <input type="submit" value="Izoh qoldirish" class="btn btn-primary">
                             </div>
                         </form>
                     </div>
@@ -102,13 +87,13 @@
                                     src="{{ route('retsept-index') . '/storage//' . $new_retsept->user->image }}"
                                     style="width: 80px; height: 80px; object-fit: cover;" alt="">
                                 <div class="d-flex flex-column pl-3">
-                                    <a class="text-dark mb-2" href="">{{ $new_retsept->message }}</a>
+                                    <a class="text-dark mb-2" href="{{route('retsept-show',$new_retsept)}}">{{ $new_retsept->message }}</a>
                                     <div class="d-flex">
                                         <small><a class="text-secondary text-uppercase font-weight-medium"
-                                                href="">{{ $new_retsept->user->name }}</a></small>
+                                                href="{{route('user-profil',$new_retsept->user)}}">{{ $new_retsept->user->name }}</a></small>
                                         <small class="text-primary px-2">|</small>
-                                        <small><a class="text-secondary text-uppercase font-weight-medium"
-                                                href="">{{ $new_retsept->created_at }}</a></small>
+                                        <small><p class="text-secondary text-uppercase font-weight-medium"
+                                                >{{ $new_retsept->created_at }}</p></small>
                                     </div>
                                 </div>
 
@@ -118,6 +103,8 @@
                     <div class="mb-5">
                             <h3 class="mb-4 section-title">Taglar</h3>
                             <div class="d-flex flex-wrap m-n1">
+                                {{-- @dd(Illuminate\Support\Facades\DB::table('retsepts')->orderBy('name')->distinct()->get()) --}}
+                                {{-- @foreach ($retseps as $retsept) --}}
                                 @foreach (App\Models\Retsept::all() as $retsept)
                                     <a href="{{ route('retsept-filter', $retsept) }}"
                                         class="btn btn-outline-secondary m-1">{{ $retsept->name }}</a>

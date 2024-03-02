@@ -1,2 +1,17 @@
+qilingan ishlar
+retsept:
+    edit
+    update
+    filter
+
+qilinishi karak
+retsept:
+    save
+    store
+    delete
+
+user:
+    login
+    register
 
 

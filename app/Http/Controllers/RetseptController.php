@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Retsept;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class RetseptController extends Controller
 {
@@ -13,17 +15,24 @@ class RetseptController extends Controller
     }
     
     public function filter(Retsept $retsept){
-        dd($retsept);
-        $retsepts = Retsept::all();
+    
+        $retsepts = Retsept::where('name',$retsept->name)->get();
         return view('retsept.index',['retsepts'=>$retsepts]);
     }
 
     public function show(Retsept $retsept){
+        // $retsepts = DB::table('retsepts')->orderBy('name')->distinct()->get();
+        // dd($retsepts);
         return view('retsept.single',['retsept'=>$retsept]);
     }
 
     public function create(){
         return view('retsept.add');
+    }
+
+    public function user_profil(User $user){
+        $retsepts = $user->retsepts;
+        return view('retsept.index',['retsepts'=>$retsepts]);
     }
 
     public function store(Request $request){
@@ -43,9 +52,10 @@ class RetseptController extends Controller
 
     public function update(Request $request,Retsept $retsept){
         \Illuminate\Support\Facades\Storage::delete($retsept->image);
+        $path = $request->file('image')->store('images');
         $retsept->name = $request->name;
         $retsept->message = $request->message;
-        $retsept->image = $request->image;
+        $retsept->image = $path;
         $retsept->update();
         return redirect()->route('retsept-show',$retsept)->with('status','Malumot o\'zgartirildi');
     }
