@@ -12,8 +12,14 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-nav-link :href="route('retsept-index')" :active="request()->routeIs('retsept-index')">
+                        {{ __('Asosiy sahifa') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('retsept-create')" :active="request()->routeIs('retsept-create')">
+                        {{ __('Retsept yaratish') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('user-profil',auth()->user())" :active="request()->routeIs('user-profil')">
+                        {{ __('Mening retseptlarim') }}
                     </x-nav-link>
                 </div>
             </div>

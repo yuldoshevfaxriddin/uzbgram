@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Retsept;
 use App\Models\User;
+use App\Models\Comment;
 use Illuminate\Support\Facades\DB;
 
 class RetseptController extends Controller
@@ -27,7 +28,10 @@ class RetseptController extends Controller
     }
 
     public function create(){
-        return view('retsept.add');
+        if(auth()->user()){
+            return view('retsept.add');
+        }
+        return redirect()->route('retsept-index');
     }
 
     public function user_profil(User $user){
@@ -36,34 +40,66 @@ class RetseptController extends Controller
     }
 
     public function store(Request $request){
-        $path = $request->file('image')->store('images');
-        $retsept = new Retsept;
-        $retsept->name = $request->name;
-        $retsept->user_id = 3;
-        $retsept->message = $request->message;
-        $retsept->image = $path;
-        $retsept->save();
-        return redirect()->route('retsept-index')->with('status','Malumot saqlandi');
-    }
+        $user = auth()->user();
+        if($user){
+            $path = $request->file('image')->store('images');
+            $retsept = new Retsept;
+            $retsept->name = $request->name;
+            $retsept->user_id = 3;
+            $retsept->message = $request->message;
+            $retsept->image = $path;
+            $retsept->save();
+            return redirect()->route('retsept-index')->with('status','Malumot saqlandi');
+
+            }
+        return redirect()->route('retsept-index');
+   }
 
     public function edit(Retsept $retsept){
-        return view('retsept.edit',['retsept'=>$retsept]);
+        $user = auth()->user();
+        if($user){
+            if($user->id == $retsept->user->id){
+                return view('retsept.edit',['retsept'=>$retsept]);
+            }
+        }
+        return redirect()->route('retsept-index');
     }
 
     public function update(Request $request,Retsept $retsept){
-        \Illuminate\Support\Facades\Storage::delete($retsept->image);
-        $path = $request->file('image')->store('images');
-        $retsept->name = $request->name;
-        $retsept->message = $request->message;
-        $retsept->image = $path;
-        $retsept->update();
+        $user = auth()->user();
+        if(! $user){
+            return redirect()->route('retsept-index');
+        }
+        if($retsept->user->id == $user->id){
+            if($request->file('image')){
+                \Illuminate\Support\Facades\Storage::delete($retsept->image);
+                $path = $request->file('image')->store('images');
+                $retsept->image = $path;
+            }
+            $retsept->name = $request->name;
+            $retsept->message = $request->message;
+            $retsept->update();
+            return redirect()->route('retsept-index');
+    
+        }
         return redirect()->route('retsept-show',$retsept)->with('status','Malumot o\'zgartirildi');
     }
-
+    
     public function destroy(Retsept $retsept){
-        \Illuminate\Support\Facades\Storage::delete($retsept->image);
-        $retsept->delete();
-        return redirect()->route('retsept-index')->with('status',' eleted Successfully');
+        $user = auth()->user();
+        if(! $user){
+            return redirect()->route('retsept-index');
+        }
+        if($retsept->user->id == $user->id){
+            \Illuminate\Support\Facades\Storage::delete($retsept->image);
+            foreach($retsept->comments as $comment){
+                $comment->delete();
+            }
+            $retsept->delete();
+            return redirect()->route('retsept-index')->with('status',' eleted Successfully');
+        }
+        return redirect()->route('retsept-index');
+        
     }
 
 }
