@@ -10,6 +10,7 @@ Route::get('/',[RetseptController::class,'index'])->name('retsept-index');
 Route::get('/show/{retsept}',[RetseptController::class,'show'])->name('retsept-show');
 Route::get('/retsept-filter/{retsept}',[RetseptController::class,'filter'])->name('retsept-filter');
 Route::post('/izoh',[IzohController::class,'store'])->name('izoh');
+Route::get('/ball',[IzohController::class,'ball'])->name('ball');
 Route::get('/users/{user}',[RetseptController::class,'user_profil'])->name('user-profil');
 
 

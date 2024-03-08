@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\User;
 use App\Models\Comment;
+use App\Models\Like;
 
 class Retsept extends Model
 {
@@ -31,5 +32,10 @@ class Retsept extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function like(): HasMany
+    {
+        return $this->hasMany(Like::class);
+    }
+
 
 }

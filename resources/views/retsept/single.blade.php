@@ -24,9 +24,42 @@
                     <div class="mb-5">
                         <img class="img-fluid rounded w-100 mb-4"
                             src="{{ route('retsept-index') . '/storage//' . $retsept->image }}" alt="Image">
+                            
                         <p>{{ $retsept->message }}</p>
                     </div>
-
+                    {{-- <div class="blog-date">
+                        <h4 class="font-weight-bold mb-n1">{{$retsept->like->avg('ball')}}</h4>
+                      </div> --}}
+                    <div class="mb-5">
+                            @auth
+                            <select name="ball">
+                                {{-- @if ($retsept->like->where('user_id',auth()->user()->id))
+                                <option value="#" disabled>{{$retsept->like->where('user_id',auth()->id)->first()}}</option>
+                                @endif --}}
+                                <option value="1" onclick="sendBall(this)">1</option>
+                                <option value="2" onclick="sendBall(this)">2</option>
+                                <option value="3" onclick="sendBall(this)">3</option>
+                                <option value="4" onclick="sendBall(this)">4</option>
+                                <option value="5" onclick="sendBall(this)">5</option>
+                            </select><p class="mb-4 " id="ball"></p>
+                            <script>
+                                function sendBall(event){
+                                    var send_url= "/ball?qiymat="+event.value+'&retsept_id='+{{$retsept->id}};
+                                    var xhttp = new XMLHttpRequest();
+                                    xhttp.onreadystatechange = function() {
+                                        if ( this.status == 200) {
+                                            var respons_data = JSON.parse(this.responseText);
+                                            console.log(respons_data['qiymat']);
+                                            document.getElementById("ball").innerHTML = respons_data['qiymat'];
+                                        }
+                                    };
+                                    xhttp.open("GET", send_url , true);
+                                    xhttp.send();
+                                }
+                                </script>
+                                @endauth
+                      
+                    </div>
                     <div class="mb-5">
                         <h3 class="mb-4 section-title">{{ count($retsept->comments) }} ta izoh </h3>
                         @foreach ($retsept->comments as $comment)
@@ -82,6 +115,7 @@
                             class="img-fluid rounded-circle mx-auto mb-3" style="width: 100px;">
                         <h3 class="text-white mb-3">{{ $retsept->user->name }}</h3>
                         <p class="text-white m-0">{{ $retsept->user->user_bio }}</p>
+                        {{-- <p class="text-white m-0">Reyting: {{$reyting}}</p> --}}
                     </div></a>
                     <div class="mb-5">
                         <h3 class="mb-4 section-title">Boshqa retseptlar</h3>

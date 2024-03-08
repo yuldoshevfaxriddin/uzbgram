@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             'name'=>'Ananymus',
             'email'=>'ananymus@gmail.com',
             'image'=>'images/default-person.png',
+            'user_bio'=>'anonim user',
             'password'=>Hash::make('932840470'),
         ]);
         \App\Models\User::factory(10)->create();

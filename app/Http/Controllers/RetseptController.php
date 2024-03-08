@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Retsept;
 use App\Models\User;
+use App\Models\Like;
 use App\Models\Comment;
 use Illuminate\Support\Facades\DB;
 
@@ -24,7 +25,16 @@ class RetseptController extends Controller
     public function show(Retsept $retsept){
         // $retsepts = DB::table('retsepts')->orderBy('name')->distinct()->get();
         // dd($retsepts);
-        return view('retsept.single',['retsept'=>$retsept]);
+        $user = $retsept->user;
+        $like_cnt = 0 ;
+        // $like_cnt = Like::where('user_id',$user->id)->avg('ball');
+        foreach($user->retsepts as $retsept){
+            $like_cnt += $retsept->like->avg('ball');
+        }
+        $reyting = $like_cnt ;
+        // dd($reyting);
+        // dd(Like::where('retsept_id',1)->get()->avg('ball'));
+        return view('retsept.single',['retsept'=>$retsept,'reyting'=>$reyting]);
     }
 
     public function create(){
