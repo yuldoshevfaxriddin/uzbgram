@@ -27,30 +27,45 @@
                             
                         <p>{{ $retsept->message }}</p>
                     </div>
-                    {{-- <div class="blog-date">
-                        <h4 class="font-weight-bold mb-n1">{{$retsept->like->avg('ball')}}</h4>
-                      </div> --}}
+                    @if (count($retsept->like)!=0)
+                      <div class="blog-date">
+                        <h6 class="font-weight-bold mb-n1" id="qiymat">{{round($retsept->like->avg('ball'),1)}}</h4>
+                      </div>
+                      @endif
                     <div class="mb-5">
                             @auth
                             <select name="ball">
+                                @for ($i = 1 ; $i<=5 ; $i++)
+                                @if ( ($retsept->like->where('user_id',auth()->user()->id)  and $retsept->like->where('user_id',auth()->user()->id)->first()->ball==$i))
+                                    <option value="{{$i}}" id="sel{{$i}}"  selected onclick="sendBall(this)">{{$retsept->like->where('user_id',auth()->user()->id)->first()->ball}} baho</option>
+                                @else
+                                <option value="{{$i}}" id="sel{{$i}}" onclick="sendBall(this)">{{$i}} baho</option>
+                                @endif
+                                
+                                @endfor
                                 {{-- @if ($retsept->like->where('user_id',auth()->user()->id))
-                                <option value="#" disabled>{{$retsept->like->where('user_id',auth()->id)->first()}}</option>
-                                @endif --}}
+                                <option value="#" disabled selected>{{$retsept->like->where('user_id',auth()->user()->id)->first()->ball}}</option>
+                                @endif
                                 <option value="1" onclick="sendBall(this)">1</option>
                                 <option value="2" onclick="sendBall(this)">2</option>
                                 <option value="3" onclick="sendBall(this)">3</option>
                                 <option value="4" onclick="sendBall(this)">4</option>
-                                <option value="5" onclick="sendBall(this)">5</option>
-                            </select><p class="mb-4 " id="ball"></p>
+                                <option value="5" onclick="sendBall(this)">5</option> --}}
+                            </select>
+                            <p class="mb-4 " id="ball">{{$retsept->like->where('user_id',auth()->user()->id)->first()->ball}}</p>
                             <script>
                                 function sendBall(event){
+                                    var old_selcted = 0;
                                     var send_url= "/ball?qiymat="+event.value+'&retsept_id='+{{$retsept->id}};
                                     var xhttp = new XMLHttpRequest();
                                     xhttp.onreadystatechange = function() {
+                                        old_selcted = 'sel'+event.value;
                                         if ( this.status == 200) {
                                             var respons_data = JSON.parse(this.responseText);
                                             console.log(respons_data['qiymat']);
                                             document.getElementById("ball").innerHTML = respons_data['qiymat'];
+                                            document.getElementById("qiymat").innerHTML = respons_data['qiymat'];
+                                            document.getElementById("reyting").innerHTML = respons_data['reyting'];
                                         }
                                     };
                                     xhttp.open("GET", send_url , true);
@@ -115,7 +130,7 @@
                             class="img-fluid rounded-circle mx-auto mb-3" style="width: 100px;">
                         <h3 class="text-white mb-3">{{ $retsept->user->name }}</h3>
                         <p class="text-white m-0">{{ $retsept->user->user_bio }}</p>
-                        {{-- <p class="text-white m-0">Reyting: {{$reyting}}</p> --}}
+                        <p class="text-white m-0" id="reyting">Reyting: {{round($reyting,1)}}</p>
                     </div></a>
                     <div class="mb-5">
                         <h3 class="mb-4 section-title">Boshqa retseptlar</h3>

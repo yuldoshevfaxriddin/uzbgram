@@ -24,16 +24,19 @@ class RetseptController extends Controller
 
     public function show(Retsept $retsept){
         // $retsepts = DB::table('retsepts')->orderBy('name')->distinct()->get();
-        // dd($retsepts);
+        // dd($retsept);
         $user = $retsept->user;
         $like_cnt = 0 ;
-        // $like_cnt = Like::where('user_id',$user->id)->avg('ball');
-        foreach($user->retsepts as $retsept){
-            $like_cnt += $retsept->like->avg('ball');
+        $like_avg = 0 ;
+        // foydalanuvchini reytingini aniqlash
+        foreach($user->retsepts as $retsept_temp){
+            if(count($retsept_temp->like)!=0){
+                // dd(count($user->retsepts[0]->like),count($user->retsepts[1]->like));
+                $like_avg += $retsept_temp->like->avg('ball');
+                $like_cnt +=1;
+            }
         }
-        $reyting = $like_cnt ;
-        // dd($reyting);
-        // dd(Like::where('retsept_id',1)->get()->avg('ball'));
+        $reyting = $like_avg/$like_cnt ;
         return view('retsept.single',['retsept'=>$retsept,'reyting'=>$reyting]);
     }
 

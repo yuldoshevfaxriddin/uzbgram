@@ -27,7 +27,7 @@
                     <div class="d-flex mb-2">
                       @if (count($retsept->like)!=0)
                       <div class="blog-date">
-                        <h4 class="font-weight-bold mb-n1">{{$retsept->like->avg('ball')}}</h4>
+                        <h4 class="font-weight-bold mb-n1">{{round($retsept->like->avg('ball'),1)}}</h4>
                       </div>
                       @endif
                         <p class="text-secondary text-uppercase font-weight-medium" ><a href="{{route('user-profil',$retsept->user)}}">{{$retsept->user->name}}</a></p>
