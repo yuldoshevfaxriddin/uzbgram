@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use App\Models\Retsept;
+use App\Models\User;
 
 class Like extends Model
 {
@@ -23,5 +24,9 @@ class Like extends Model
     public function retsept(): BelongsTo
     {
         return $this->belongsTo(Retsept::class);
+    }
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

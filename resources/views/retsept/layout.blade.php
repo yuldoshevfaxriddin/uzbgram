@@ -3,7 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Retseptlar</title>
+
+    @yield('meta-data')
+    
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <!-- Favicon -->
@@ -22,6 +24,8 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ route('retsept-index') }}/css/style.css" rel="stylesheet">
+
+
 </head>
 
 <body>
@@ -53,6 +57,8 @@
         </div>
         @endif
     </div>
+
+
         @yield('content')
         
  

@@ -12,13 +12,12 @@ use Illuminate\Support\Facades\DB;
 class RetseptController extends Controller
 {
     public function index(){
-        $retsepts = Retsept::all();
+        $retsepts = Retsept::orderBy('id','desc')->get();
         return view('retsept.index',['retsepts'=>$retsepts]);
     }
     
     public function filter(Retsept $retsept){
-    
-        $retsepts = Retsept::where('name',$retsept->name)->get();
+        $retsepts = Retsept::where('name',$retsept->name)->orderBy('id','desc')->get();
         return view('retsept.index',['retsepts'=>$retsepts]);
     }
 
@@ -36,7 +35,10 @@ class RetseptController extends Controller
                 $like_cnt +=1;
             }
         }
-        $reyting = $like_avg/$like_cnt ;
+        $reyting = null ;
+        if($like_cnt!=0){
+            $reyting = $like_avg/$like_cnt ;
+        }
         return view('retsept.single',['retsept'=>$retsept,'reyting'=>$reyting]);
     }
 
@@ -58,7 +60,7 @@ class RetseptController extends Controller
             $path = $request->file('image')->store('images');
             $retsept = new Retsept;
             $retsept->name = $request->name;
-            $retsept->user_id = 3;
+            $retsept->user_id = $user->id;
             $retsept->message = $request->message;
             $retsept->image = $path;
             $retsept->save();
@@ -79,6 +81,7 @@ class RetseptController extends Controller
     }
 
     public function update(Request $request,Retsept $retsept){
+        
         $user = auth()->user();
         if(! $user){
             return redirect()->route('retsept-index');
@@ -92,10 +95,9 @@ class RetseptController extends Controller
             $retsept->name = $request->name;
             $retsept->message = $request->message;
             $retsept->update();
-            return redirect()->route('retsept-index');
-    
+            return redirect()->route('retsept-index')->with('status','Malumot o\'zgartirildi');
         }
-        return redirect()->route('retsept-show',$retsept)->with('status','Malumot o\'zgartirildi');
+        return redirect()->route('retsept-show',$retsept);
     }
     
     public function destroy(Retsept $retsept){
@@ -104,12 +106,15 @@ class RetseptController extends Controller
             return redirect()->route('retsept-index');
         }
         if($retsept->user->id == $user->id){
-            \Illuminate\Support\Facades\Storage::delete($retsept->image);
+            foreach($retsept->like as $like){
+                $like->delete();
+            }
             foreach($retsept->comments as $comment){
                 $comment->delete();
             }
+            \Illuminate\Support\Facades\Storage::delete($retsept->image);
             $retsept->delete();
-            return redirect()->route('retsept-index')->with('status',' eleted Successfully');
+            return redirect()->route('retsept-index')->with('status','Malumot o\'chirildi');
         }
         return redirect()->route('retsept-index');
         

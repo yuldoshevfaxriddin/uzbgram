@@ -1,5 +1,11 @@
 @extends('retsept.layout')
 
+@section('meta-data')
+<title>{{ $retsept->user->name.' '. $retsept->name }}</title>
+{{-- <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script> --}}
+
+@endsection
+
 @section('content')
     <!-- Detail Start -->
     <div class="container-fluid py-5">
@@ -25,7 +31,16 @@
                         <img class="img-fluid rounded w-100 mb-4"
                             src="{{ route('retsept-index') . '/storage//' . $retsept->image }}" alt="Image">
                             
-                        <p>{{ $retsept->message }}</p>
+                        {{-- <pre style='font-family: "Poppins", sans-serif;
+                        font-size: 1rem;
+                        font-weight: 400;
+                        line-height: 1.5;
+                        color: #777777;
+                        text-align: left;'
+                        > --}}
+                        <p style="">{{ $retsept->message }}</p>
+                        
+                    {{-- </pre> --}}
                     </div>
                     @if (count($retsept->like)!=0)
                       <div class="blog-date">
@@ -36,11 +51,11 @@
                             @auth
                             <select name="ball">
                                 @for ($i = 1 ; $i<=5 ; $i++)
-                                @if ( ($retsept->like->where('user_id',auth()->user()->id)  and $retsept->like->where('user_id',auth()->user()->id)->first()->ball==$i))
+                                {{-- @if ( ($retsept->like->where('user_id',auth()->user()->id)  and $retsept->like->where('user_id',auth()->user()->id)->first()->ball==$i))
                                     <option value="{{$i}}" id="sel{{$i}}"  selected onclick="sendBall(this)">{{$retsept->like->where('user_id',auth()->user()->id)->first()->ball}} baho</option>
-                                @else
+                                @else --}}
                                 <option value="{{$i}}" id="sel{{$i}}" onclick="sendBall(this)">{{$i}} baho</option>
-                                @endif
+                                {{-- @endif --}}
                                 
                                 @endfor
                                 {{-- @if ($retsept->like->where('user_id',auth()->user()->id))
@@ -52,7 +67,11 @@
                                 <option value="4" onclick="sendBall(this)">4</option>
                                 <option value="5" onclick="sendBall(this)">5</option> --}}
                             </select>
-                            <p class="mb-4 " id="ball">{{$retsept->like->where('user_id',auth()->user()->id)->first()->ball}}</p>
+                            <p class="mb-4 " id="ball">
+                                @if ($retsept->like->where('user_id',auth()->user()->id)->first())
+                                    {{$retsept->like->where('user_id',auth()->user()->id)->first()->ball}}
+                                @endif
+                            </p>
                             <script>
                                 function sendBall(event){
                                     var old_selcted = 0;
@@ -64,7 +83,7 @@
                                             var respons_data = JSON.parse(this.responseText);
                                             console.log(respons_data['qiymat']);
                                             document.getElementById("ball").innerHTML = respons_data['qiymat'];
-                                            document.getElementById("qiymat").innerHTML = respons_data['qiymat'];
+                                            document.getElementById("qiymat").innerHTML = respons_data['avg_qiymat'];
                                             document.getElementById("reyting").innerHTML = respons_data['reyting'];
                                         }
                                     };
@@ -106,6 +125,19 @@
                             </div>
                         </div> --}}
                     </div>
+                    
+                    {{-- <h1>Classic editor</h1>
+                    <div id="editor">
+                        <p>This is some sample content.</p>
+                    </div>
+                    <script>
+                        ClassicEditor
+                            .create( document.querySelector( '#editor' ) )
+                            .catch( error => {
+                                console.error( error );
+                            } );
+                    </script> --}}
+
 
                     <div class="bg-light rounded p-5">
                         <h3 class="mb-4 section-title">Izoh qoldirish</h3>

@@ -26,7 +26,7 @@ class IzohController extends Controller
             'description' => $message,
         ]);
         
-        return redirect()->back();
+        return redirect()->back()->with('status','Izoh qabul qilindi');
         
     }
     public function ball(Request $request){
@@ -35,41 +35,55 @@ class IzohController extends Controller
             $retsept_id = $request->retsept_id;
             $retsept = Retsept::find($retsept_id);
             $ball = $request->qiymat;
-            $likes = Like::where('user_id',$user->id)->where('retsept_id',$retsept_id)->first();
-            if(! $likes){
+            $like = Like::where('user_id',$user->id)->where('retsept_id',$retsept_id)->first();
+            if(! $like){
                 Like::create([
                     'user_id'=>$user->id,
                     'retsept_id'=>$retsept_id,
                     'ball'=>$ball,
                 ]);
-                // Like::create([
-                //     'user_id'=>1,
-                //     'retsept_id'=>4,
-                //     'ball'=>3,
-                // ]);
-                // $message['reyting']=0;
-                // $message['avg_qiymat']=round(Retsept::find($retsept_id)->first()->like->avg('ball'),1);
+
+                $like_cnt = 0 ;
+                $like_avg = 0 ;
+                $user_temp = $retsept->user;
+                // foydalanuvchini reytingini aniqlash
+                foreach($user_temp->retsepts as $retsept_temp){
+                    if(count($retsept_temp->like)!=0){
+                        // dd(count($user->retsepts[0]->like),count($user->retsepts[1]->like));
+                        $like_avg += $retsept_temp->like->avg('ball');
+                        $like_cnt +=1;
+                    }
+                }
+                $reyting = null;
+                if($like_cnt!=0){
+                    $reyting = $like_avg/$like_cnt ;
+                }
+                $message['avg_qiymat']=round($retsept->like->avg('ball'),1);
+                $message['reyting']=round($reyting,1);
                 $message['qiymat']=$ball;
                 $message['message']="malumot saqlandi";
                 return response()->json($message);
             }
 
             // return "if bu";
-            $likes->ball=$ball;
-            $likes->update();
+            $like->ball=$ball;
+            $like->update();
 
             $like_cnt = 0 ;
             $like_avg = 0 ;
-            $user = $retsept->user;
+            $user_temp = $retsept->user;
             // foydalanuvchini reytingini aniqlash
-            foreach($user->retsepts as $retsept_temp){
+            foreach($user_temp->retsepts as $retsept_temp){
                 if(count($retsept_temp->like)!=0){
                     // dd(count($user->retsepts[0]->like),count($user->retsepts[1]->like));
                     $like_avg += $retsept_temp->like->avg('ball');
                     $like_cnt +=1;
                 }
             }
-            $reyting = $like_avg/$like_cnt ;
+            $reyting = null;
+            if($like_cnt!=0){
+                $reyting = $like_avg/$like_cnt ;
+            }
             $message['avg_qiymat']=round($retsept->like->avg('ball'),1);
             $message['qiymat']=$ball;
             $message['reyting']=round($reyting,1);

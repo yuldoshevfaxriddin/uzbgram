@@ -57,4 +57,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Retsept::class);
     }
+    public function like(): HasMany
+    {
+        return $this->hasMany(Like::class);
+    }
 }

@@ -17,11 +17,11 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="message">Message *</label>
+                                <label for="message">Matn *</label>
                                 <textarea id="message" cols="30" rows="5" name='message' class="form-control"></textarea>
                             </div>
                             <div class="form-group mb-0">
-                                <input type="submit" value="Leave Comment" class="btn btn-primary">
+                                <input type="submit" value="Yaratish" class="btn btn-primary">
                             </div>
                         </form>
                     </div>

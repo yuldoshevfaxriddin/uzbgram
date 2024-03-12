@@ -48,9 +48,33 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        $retsepts =$user->retsepts;
+        $comments =$user->comments;
+        $likes =$user->like;
+
+        foreach($retsepts as $retsept){
+            foreach($retsept->like as $like){
+                $like->delete();
+            }
+            foreach($retsept->comments as $comment){
+                $comment->delete();
+            }
+            \Illuminate\Support\Facades\Storage::delete($retsept->image);
+            $retsept->delete();
+        }
+        foreach($comments as $comment){
+            $comment->delete();
+        }
+        foreach($likes as $like){
+            $like->delete();
+        }
+        if($user->image !='images/default_user_avatar.jpg'){
+            \Illuminate\Support\Facades\Storage::delete($user->image);
+        }
+    
+        $user->delete();
         Auth::logout();
 
-        $user->delete();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

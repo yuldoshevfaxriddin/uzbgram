@@ -6,7 +6,7 @@
 @endif
 {{-- @dd($retsept) --}}
 <div class="bg-light rounded p-5">
-                        <img src="{{route('retsept-index').'/storage//'.$retsept->image}}" alt="photo" style="width:90vw" >
+                            <img src="{{route('retsept-index').'/storage//'.$retsept->image}}" alt="photo" style="width: 85vw">
                         <h3 class="mb-4 section-title">Retseptni tahrirlash</h3>
                         <form action="{{route('retsept-edit',$retsept)}}" method="POST" enctype="multipart/form-data">
                             @csrf
@@ -21,7 +21,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="message">Message *</label>
+                                <label for="message">Matn *</label>
                                 <textarea id="message" cols="30" rows="5" name='message' class="form-control">{{$retsept->message}}</textarea>
                             </div>
                             <div class="form-group mb-0">

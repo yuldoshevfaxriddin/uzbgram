@@ -1,5 +1,10 @@
 @extends('retsept.layout')
 
+@section('meta-data')
+<title>Retseptlar</title>
+@endsection
+
+
 @section('content')
     @if (session('status'))
         <h6 class="alert alert-success">{{ session('status') }}</h6>
@@ -17,12 +22,12 @@
                     <h4 class="font-weight-normal text-muted mb-3">Retsept almashish tizimi</h4>
                 </div>
             </div>
-
+        
             <div class="row">
                 @foreach ($retsepts as $retsept)
                 <div class="col-lg-4 col-md-6 mb-5">
                     <div class="position-relative mb-4">
-                        <img class="img-fluid rounded w-100" src="{{route('retsept-index').'/storage//'.$retsept->image}}" alt="">
+                        <img class="img-fluid rounded w-100" style="width: 200px;height: 200px;" src="{{route('retsept-index').'/storage//'.$retsept->image}}" alt="">
                     </div>
                     <div class="d-flex mb-2">
                       @if (count($retsept->like)!=0)
@@ -34,12 +39,11 @@
                         <span class="text-primary px-2">|</span>
                         <p class="text-secondary text-uppercase font-weight-medium" >{{$retsept->created_at}}</p>
                     </div>
-                    <h5 class="font-weight-medium mb-2">{{$retsept->name}}</h5>
-                    <p class="mb-4">{{$retsept->message}}</p>
+                    <h5 class="font-weight-medium mb-2">{{substr($retsept->name,0,20)}}</h5>
+                    <p class="mb-4" title="{{$retsept->message}}">{{substr($retsept->message,0,38)}}...</p>
                     <a class="btn btn-sm btn-primary py-2" href="{{route('retsept-show',$retsept)}}">Tanishish</a>
                 </div>
                 @endforeach
-
 
                 {{-- <div class="col-12">
                     <nav aria-label="Page navigation">
