@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use App\Models\Retsept;
 use App\Models\User;
@@ -15,7 +15,7 @@ class RetseptController extends Controller
         $retsepts = Retsept::orderBy('id','desc')->get();
         return view('retsept.index',['retsepts'=>$retsepts]);
     }
-    
+
     public function filter(Retsept $retsept){
         $retsepts = Retsept::where('name',$retsept->name)->orderBy('id','desc')->get();
         return view('retsept.index',['retsepts'=>$retsepts]);
@@ -57,6 +57,18 @@ class RetseptController extends Controller
     public function store(Request $request){
         $user = auth()->user();
         if($user){
+            $validated = $request->validate([
+                'name' => 'required|min:2',
+                'message' => 'required',
+                'image' => 'required|mimes:jpeg,jpg,png,gif|max:2048',
+            ] , [
+        'name.required' => 'Nomini yozish majburiy',
+        'message.required' => 'Matn yozish majburiy',
+        'image.required' => 'Rasm joylash majburiy',
+        'image.mimes' => 'Quyidagi formatlarda jo\'nating: jpeg,jpg,png,gif',
+        'image.max' => 'Rasm hajmi 2 mb dan oshmasin',
+     ]);
+//            dd($validated);
             $path = $request->file('image')->store('images');
             $retsept = new Retsept;
             $retsept->name = $request->name;
@@ -81,7 +93,7 @@ class RetseptController extends Controller
     }
 
     public function update(Request $request,Retsept $retsept){
-        
+
         $user = auth()->user();
         if(! $user){
             return redirect()->route('retsept-index');
@@ -99,7 +111,7 @@ class RetseptController extends Controller
         }
         return redirect()->route('retsept-show',$retsept);
     }
-    
+
     public function destroy(Retsept $retsept){
         $user = auth()->user();
         if(! $user){
@@ -117,7 +129,7 @@ class RetseptController extends Controller
             return redirect()->route('retsept-index')->with('status','Malumot o\'chirildi');
         }
         return redirect()->route('retsept-index');
-        
+
     }
 
 }

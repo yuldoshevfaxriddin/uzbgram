@@ -9,17 +9,26 @@
                             <div class="form-row">
                                 <div class="form-group col-sm-6">
                                     <label for="name">Nomi *</label>
-                                    <input type="text" class="form-control" name='name' id="name">
+                                    <input type="text" class="form-control" name='name' id="name"  value="{{ old('name') }}">
                                 </div>
+                                @error('name')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                                 <div class="form-group col-sm-6">
                                     <label for="file">Rasm *</label>
-                                    <input type="file" class="form-control" name='image' id="file">
+                                    <input type="file" class="form-control" name='image' id="file"  >
                                 </div>
+                                @error('image')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="message">Matn *</label>
-                                <textarea id="message" cols="30" rows="5" name='message' class="form-control"></textarea>
+                                <textarea id="message" cols="30" rows="5" name='message' class="form-control"> {{ old('message') }}</textarea>
                             </div>
+                            @error('message')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                             <div class="form-group mb-0">
                                 <input type="submit" value="Yaratish" class="btn btn-primary">
                             </div>
